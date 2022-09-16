@@ -1,4 +1,34 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.height {
+  height: 60vh;
+}
+
+input {
+    text-align: center;
+    border: none;
+    text-shadow: 2px 2px 5px black;
+    background-color: transparent;
+    resize: none;
+    outline: none;
+}
+
+
+.buttonBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+
 body {
+  background-color: lavender;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
