@@ -96,6 +96,7 @@ export default class Main extends React.Component {
         <button type='button' className="btn btn-dark p-2"onClick={this.handleClick} disabled={disabled}>Acionar cronometro!</button>
         {error && <p>Insira números válidos nos inputs</p>}
         {disabled && <img src={WOLF} alt='wolf' width={700} />}
+        <p className="mt-5 fs-5 border-bottom">Desenvolvido por João Coqueiro</p>
       </div>
       </>
     );
