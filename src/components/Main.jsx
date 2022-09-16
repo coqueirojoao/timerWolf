@@ -1,6 +1,8 @@
 import React from 'react';
 import WOLF from '../content/WOLF.png'
-import LifeIsGood from '../content/LifeIsGood.mp3'
+import LoFi from '../content/LoFi.mp3'
+import NFS from '../content/NFS.mp3'
+import DMC from '../content/DMC.mp3'
 
 export default class Main extends React.Component {
   state = {
@@ -8,9 +10,13 @@ export default class Main extends React.Component {
     minTime: '',
     secTime: '',
     error: false,
-    music: false,
+    musicLoFi: false,
+    musicDMC: false,
+    musicNFS: false,
     verify: false,
-    audio: new Audio(LifeIsGood),
+    audioDMC: new Audio(DMC),
+    audioNFS: new Audio(NFS),
+    audioLoFi: new Audio(LoFi)
   };
 
   handleChange = ({ target }) => {
@@ -23,13 +29,25 @@ export default class Main extends React.Component {
   };
 
   handleAudio = () => {
-    const { music, verify, audio } = this.state;
-    audio.volume = 0.2
-    if (music && !verify) {
+    const { verify, audioLoFi, musicLoFi, musicNFS, audioNFS, audioDMC, musicDMC } = this.state;
+    audioLoFi.volume = 0.2;
+    if (musicLoFi && !verify) {
       this.setState({
         verify: true,
       })
-      return audio.play();
+      return audioLoFi.play();
+    }
+    if (musicNFS && !verify) {
+      this.setState({
+        verify: true,
+      })
+      return audioNFS.play();
+    }
+    if (musicDMC && !verify) {
+      this.setState({
+        verify: true,
+      })
+      return audioDMC.play();
     }
   }
 
@@ -38,6 +56,9 @@ export default class Main extends React.Component {
     const { minTime, secTime } = this.state;
     if (+minTime <= 0 && +secTime === 0) {
       this.setState({
+        musicLoFi: false,
+        musicDMC: false,
+        musicNFS: false,
         verify: false,
         music: false,
         error: false,
@@ -48,14 +69,15 @@ export default class Main extends React.Component {
     }
     if (+minTime < 0 || +secTime < 0 || (!secTime && !minTime) || (isNaN(secTime) || isNaN(minTime))) {
       this.setState({
-        music: false,
+        musicDMC: false,
+        musicNFS: false,
+        musicLoFi: false,
         error: true,
       })
       return clearInterval(myInterval);
     }
     if (+secTime === 0) {
       this.setState((previousState) => ({
-        music: true,
         error: false,
         disabled: true,
         minTime: previousState.minTime - 1,
@@ -64,7 +86,6 @@ export default class Main extends React.Component {
       return this.handleAudio();
     }
     this.setState((previousState) => ({
-      music: true,
       error: false,
       disabled: true,
       secTime: +previousState.secTime - 1,
@@ -74,10 +95,14 @@ export default class Main extends React.Component {
   }
 
   render() {
-    const { minTime, secTime, disabled, error, audio } = this.state;
+    const { minTime, secTime, disabled, error, audioLoFi, audioDMC, audioNFS } = this.state;
     if (!disabled) {
-      audio.pause();
-      audio.currentTime = 0;
+      audioDMC.pause();
+      audioNFS.pause();
+      audioLoFi.pause();
+      audioLoFi.currentTime = 0;
+      audioDMC.currentTime = 0;
+      audioNFS.currentTime = 0;
     }
     return (
       <>
@@ -94,10 +119,21 @@ export default class Main extends React.Component {
         </div>
         <div className='buttonBox'>
         <button type='button' className="btn btn-dark p-2"onClick={this.handleClick} disabled={disabled}>Acionar cronometro!</button>
-        {error && <p>Insira números válidos nos inputs</p>}
-        {disabled && <img src={WOLF} alt='wolf' width={700} />}
-        <p className="mt-5 fs-5 border-bottom">Desenvolvido por João Coqueiro</p>
+        <button type='button' className="btn btn-dark p-2"onClick={() => {
+          this.setState({ musicLoFi: true }) 
+          this.handleClick() } } disabled={disabled}>Acionar timer especial lo-fi!</button>
+        <button type='button' className="btn btn-dark p-2"onClick={() => {
+          this.setState({ musicNFS: true }) 
+          this.handleClick() } } disabled={disabled}>Acionar timer especial Need For Speed!</button>
+        <button type='button' className="btn btn-dark p-2"onClick={() => {
+          this.setState({ musicDMC: true }) 
+          this.handleClick() } } disabled={disabled}>Acionar timer especial Devil May Cry</button>
       </div>
+        {error && <p className='text-center fs-5'>Insira números válidos nos inputs</p>}
+        <div className='d-flex flex-column align-items-center mt-5'>
+        {disabled && <img src={WOLF} alt='wolf' width={700} />}
+        <p className="mt-5 fs-5 text-center">Desenvolvido por João Coqueiro</p>
+        </div>
       </>
     );
   }
