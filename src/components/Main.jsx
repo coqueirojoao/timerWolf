@@ -3,6 +3,7 @@ import WOLF from '../content/WOLF.png'
 import LoFi from '../content/LoFi.mp3'
 import NFS from '../content/NFS.mp3'
 import DMC from '../content/DMC.mp3'
+import DS from '../content/DS.mp3'
 
 export default class Main extends React.Component {
   state = {
@@ -13,7 +14,9 @@ export default class Main extends React.Component {
     musicLoFi: false,
     musicDMC: false,
     musicNFS: false,
+    musicDS: false,
     verify: false,
+    audioDS: new Audio(DS),
     audioDMC: new Audio(DMC),
     audioNFS: new Audio(NFS),
     audioLoFi: new Audio(LoFi)
@@ -29,10 +32,11 @@ export default class Main extends React.Component {
   };
 
   handleAudio = () => {
-    const { verify, audioLoFi, musicLoFi, musicNFS, audioNFS, audioDMC, musicDMC } = this.state;
+    const { verify, audioLoFi, musicLoFi, musicNFS, audioNFS, audioDMC, musicDMC, audioDS, musicDS } = this.state;
     audioNFS.volume = 0.2;
     audioDMC.volume = 0.2;
     audioLoFi.volume = 0.2;
+    audioDS.volume = 0.2;
     if (musicLoFi && !verify) {
       this.setState({
         verify: true,
@@ -51,6 +55,12 @@ export default class Main extends React.Component {
       })
       return audioDMC.play();
     }
+    if (musicDS && !verify) {
+      this.setState({
+        verify: true,
+      })
+      return audioDS.play();
+    }
   }
 
   handleClick = () => {
@@ -61,6 +71,7 @@ export default class Main extends React.Component {
         musicLoFi: false,
         musicDMC: false,
         musicNFS: false,
+        musicDS: false,
         verify: false,
         music: false,
         error: false,
@@ -72,6 +83,7 @@ export default class Main extends React.Component {
     if (+minTime < 0 || +secTime < 0 || (!secTime && !minTime) || (isNaN(secTime) || isNaN(minTime))) {
       this.setState({
         musicDMC: false,
+        musicDS: false,
         musicNFS: false,
         musicLoFi: false,
         error: true,
@@ -97,11 +109,13 @@ export default class Main extends React.Component {
   }
 
   render() {
-    const { minTime, secTime, disabled, error, audioLoFi, audioDMC, audioNFS } = this.state;
+    const { minTime, secTime, disabled, error, audioLoFi, audioDMC, audioNFS, audioDS } = this.state;
     if (!disabled) {
+      audioDS.pause();
       audioDMC.pause();
       audioNFS.pause();
       audioLoFi.pause();
+      audioDS.currentTime = 0;
       audioLoFi.currentTime = 0;
       audioDMC.currentTime = 0;
       audioNFS.currentTime = 0;
@@ -129,7 +143,10 @@ export default class Main extends React.Component {
           this.handleClick() } } disabled={disabled}>Acionar timer especial Need For Speed!</button>
         <button type='button' className="btn btn-dark p-2"onClick={() => {
           this.setState({ musicDMC: true }) 
-          this.handleClick() } } disabled={disabled}>Acionar timer especial Devil May Cry</button>
+          this.handleClick() } } disabled={disabled}>Acionar timer especial Devil May Cry!</button>
+        <button type='button' className="btn btn-dark p-2"onClick={() => {
+          this.setState({ musicDS: true }) 
+          this.handleClick() } } disabled={disabled}>Acionar timer especial Dark Souls!</button>
       </div>
         {error && <p className='text-center fs-5'>Insira números válidos nos inputs</p>}
         <div className='d-flex flex-column align-items-center mt-5'>
