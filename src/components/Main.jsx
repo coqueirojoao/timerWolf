@@ -30,6 +30,8 @@ export default class Main extends React.Component {
 
   handleAudio = () => {
     const { verify, audioLoFi, musicLoFi, musicNFS, audioNFS, audioDMC, musicDMC } = this.state;
+    audioNFS.volume = 0.2;
+    audioDMC.volume = 0.2;
     audioLoFi.volume = 0.2;
     if (musicLoFi && !verify) {
       this.setState({
