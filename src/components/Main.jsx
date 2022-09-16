@@ -5,8 +5,8 @@ import LifeIsGood from '../content/LifeIsGood.mp3'
 export default class Main extends React.Component {
   state = {
     disabled: false,
-    minTime: 0,
-    secTime: 0,
+    minTime: '',
+    secTime: '',
     error: false,
     music: false,
     verify: false,
@@ -84,12 +84,12 @@ export default class Main extends React.Component {
       <div className='container d-flex justify-content-center align-items-center height'>
         <div className='d-flex flex-column align-items-center justify-content-center mb-4'>
         <p className='display-6'>Minutes</p>
-        <input type='text' value={minTime} name='minTime' className='text-center display-3' onChange={this.handleChange} disabled={disabled} />
+        <input type='text' value={minTime} name='minTime' className='text-center display-3 border-bottom' onChange={this.handleChange} disabled={disabled} placeholder='00' />
         </div>
         <p className='text-center display-2 mt-5'>:</p>
         <div className='d-flex flex-column align-items-center justify-content-center mb-4'>
         <p className='display-6'>Seconds</p>
-        <input type='text' value={secTime} name='secTime' className='text-center display-3' onChange={this.handleChange} disabled={disabled} />
+        <input type='text' value={secTime} name='secTime' className='text-center display-3 border-bottom' onChange={this.handleChange} disabled={disabled} placeholder='00' />
         </div>
         </div>
         <div className='buttonBox'>
