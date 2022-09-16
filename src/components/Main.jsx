@@ -4,6 +4,7 @@ import LoFi from '../content/LoFi.mp3'
 import NFS from '../content/NFS.mp3'
 import DMC from '../content/DMC.mp3'
 import DS from '../content/DS.mp3'
+import AZEITONA from '../content/AZEITONA.mp3'
 
 export default class Main extends React.Component {
   state = {
@@ -16,6 +17,8 @@ export default class Main extends React.Component {
     musicNFS: false,
     musicDS: false,
     verify: false,
+    azeitona: false,
+    azeitonaAudio: new Audio(AZEITONA),
     audioDS: new Audio(DS),
     audioDMC: new Audio(DMC),
     audioNFS: new Audio(NFS),
@@ -27,6 +30,7 @@ export default class Main extends React.Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
 
     this.setState({
+      azeitona: false,
       [name]: value,
     });
   };
@@ -68,10 +72,13 @@ export default class Main extends React.Component {
     const { minTime, secTime } = this.state;
     if (+minTime <= 0 && +secTime === 0) {
       this.setState({
+        minTime: '',
+        secTime: '',
         musicLoFi: false,
         musicDMC: false,
         musicNFS: false,
         musicDS: false,
+        azeitona: true,
         verify: false,
         music: false,
         error: false,
@@ -83,6 +90,7 @@ export default class Main extends React.Component {
     if (+minTime < 0 || +secTime < 0 || (!secTime && !minTime) || (isNaN(secTime) || isNaN(minTime))) {
       this.setState({
         musicDMC: false,
+        azeitona: false,
         musicDS: false,
         musicNFS: false,
         musicLoFi: false,
@@ -93,6 +101,7 @@ export default class Main extends React.Component {
     if (+secTime === 0) {
       this.setState((previousState) => ({
         error: false,
+        azeitona: false,
         disabled: true,
         minTime: previousState.minTime - 1,
         secTime: 59,
@@ -101,6 +110,7 @@ export default class Main extends React.Component {
     }
     this.setState((previousState) => ({
       error: false,
+      azeitona: false,
       disabled: true,
       secTime: +previousState.secTime - 1,
     }))
@@ -109,7 +119,7 @@ export default class Main extends React.Component {
   }
 
   render() {
-    const { minTime, secTime, disabled, error, audioLoFi, audioDMC, audioNFS, audioDS } = this.state;
+    const { minTime, secTime, disabled, error, audioLoFi, audioDMC, audioNFS, audioDS, azeitona, azeitonaAudio } = this.state;
     if (!disabled) {
       audioDS.pause();
       audioDMC.pause();
@@ -119,6 +129,10 @@ export default class Main extends React.Component {
       audioLoFi.currentTime = 0;
       audioDMC.currentTime = 0;
       audioNFS.currentTime = 0;
+    }
+    if (azeitona) {
+      azeitonaAudio.volume = 0.5;
+      azeitonaAudio.play();
     }
     return (
       <>
