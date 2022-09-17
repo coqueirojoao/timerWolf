@@ -8,7 +8,10 @@ import AZEITONA from '../content/AZEITONA.mp3'
 
 export default class Main extends React.Component {
   state = {
+    checkedNumbers: false,
     disabled: false,
+    checkedMin: '',
+    checkedSec: '',
     minTime: '',
     secTime: '',
     error: false,
@@ -69,11 +72,19 @@ export default class Main extends React.Component {
 
   handleClick = () => {
     const myInterval = setInterval(() => {
-    const { minTime, secTime } = this.state;
+    const { minTime, secTime, checkedNumbers, checkedMin, checkedSec } = this.state;
+    if(!checkedNumbers) {
+      this.setState({
+        checkedNumbers: true,
+        checkedMin: minTime,
+        checkedSec: secTime,
+      })
+    }
     if (+minTime <= 0 && +secTime === 0) {
       this.setState({
-        minTime: '',
-        secTime: '',
+        minTime: checkedMin,
+        secTime: checkedSec,
+        checkedNumbers: false,
         musicLoFi: false,
         musicDMC: false,
         musicNFS: false,
